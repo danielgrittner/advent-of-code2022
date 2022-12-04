@@ -3,7 +3,9 @@ use std::io::{self, BufRead, Error};
 use std::path::Path;
 
 fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
-where P: AsRef<Path>, {
+where
+    P: AsRef<Path>,
+{
     let file = File::open(filename)?;
     Ok(io::BufReader::new(file).lines())
 }
@@ -37,11 +39,7 @@ fn main() -> Result<(), Error> {
     println!("Task 1: {}", out_task1);
 
     // Task 2
-    let out_task2: i32 = calories
-        .iter()
-        .rev()
-        .take(3)
-        .sum();
+    let out_task2: i32 = calories.iter().rev().take(3).sum();
     println!("Task 2: {}", out_task2);
 
     Ok(())
