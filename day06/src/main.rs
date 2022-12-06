@@ -25,7 +25,6 @@ fn detect_start(data: &Vec<char>, message_length: usize) -> usize {
     }
 
     for i in message_length..data.len() {
-        // Remove i - 4
         let value = window.get_mut(&data[i - message_length]).unwrap();
         *value -= 1;
         if *value == 0 {
