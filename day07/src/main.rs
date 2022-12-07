@@ -23,7 +23,7 @@ fn load_data(filename: &str) -> io::Result<Vec<String>> {
  * ls ==> update last element in stack
  */
 
-fn collect_sorted_dir_sizes(data: &Vec<String>) -> Vec<u64> {
+fn collect_dir_sizes(data: &Vec<String>) -> Vec<u64> {
     let mut dir_sizes = Vec::new();
 
     let filesize_regex = Regex::new(r"(?P<filesize>\d+) *").unwrap();
@@ -66,37 +66,33 @@ fn collect_sorted_dir_sizes(data: &Vec<String>) -> Vec<u64> {
         }
     }
 
-    // Sort for efficient querying
-    dir_sizes.sort();
     dir_sizes
 }
 
-fn task1(sorted_dir_sizes: &Vec<u64>) -> u64 {
+fn task1(dir_sizes: &Vec<u64>) -> u64 {
     let limit = 100_000;
-    let i = sorted_dir_sizes.partition_point(|&x| x < limit);
-    sorted_dir_sizes[..i].iter().sum()
+    dir_sizes.iter().filter(|&x| *x < limit).sum()
 }
 
-fn task2(sorted_dir_sizes: &Vec<u64>) -> u64 {
-    let limit =
-        30000000 - (70000000 as i64 - i64::try_from(*sorted_dir_sizes.last().unwrap()).unwrap());
-    if limit <= 0 {
-        return 0;
-    }
-    let i = sorted_dir_sizes.partition_point(|&x| x < limit as u64);
-    sorted_dir_sizes[i]
+fn task2(dir_sizes: &Vec<u64>) -> u64 {
+    let limit = 30000000 - (70000000 as i64 - i64::try_from(*dir_sizes.last().unwrap()).unwrap());
+    *dir_sizes
+        .iter()
+        .filter(|&x| *x >= (limit as u64))
+        .min()
+        .unwrap()
 }
 
 fn main() -> io::Result<()> {
     let data = load_data("input.txt")?;
-    let sorted_dir_sizes = collect_sorted_dir_sizes(&data);
+    let dir_sizes = collect_dir_sizes(&data);
 
     // Task 1
-    let out_task1 = task1(&sorted_dir_sizes);
+    let out_task1 = task1(&dir_sizes);
     println!("Task 1: {}", out_task1);
 
     // Task 2
-    let out_task2 = task2(&sorted_dir_sizes);
+    let out_task2 = task2(&dir_sizes);
     println!("Task 2: {}", out_task2);
 
     Ok(())
