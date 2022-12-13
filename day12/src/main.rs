@@ -1,24 +1,26 @@
+use priority_queue::PriorityQueue;
 use std::cmp::Reverse;
 use std::fs::File;
 use std::io::{self, BufRead};
-use std::path::{Path, self};
-use priority_queue::PriorityQueue;
+use std::path::{self, Path};
 
 fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
-where P: AsRef<Path> {
+where
+    P: AsRef<Path>,
+{
     let file = File::open(filename)?;
     Ok(io::BufReader::new(file).lines())
 }
 
 fn load_data(filename: &str) -> io::Result<Vec<Vec<char>>> {
-    Ok(
-        read_lines(filename)?
-            .map(|l| l.unwrap().chars().collect())
-            .collect()
-    )
+    Ok(read_lines(filename)?
+        .map(|l| l.unwrap().chars().collect())
+        .collect())
 }
 
-fn find_start_and_target(data: &Vec<Vec<char>>) -> (Option<(usize, usize)>, Option<(usize, usize)>) {
+fn find_start_and_target(
+    data: &Vec<Vec<char>>,
+) -> (Option<(usize, usize)>, Option<(usize, usize)>) {
     let mut start = Option::None;
     let mut target = Option::None;
     for i in 0..data.len() {
@@ -30,7 +32,7 @@ fn find_start_and_target(data: &Vec<Vec<char>>) -> (Option<(usize, usize)>, Opti
             }
         }
     }
-    
+
     (start, target)
 }
 
@@ -57,8 +59,12 @@ fn task1(data: &Vec<Vec<char>>, start_pos: (usize, usize), target_pos: (usize, u
         let upperbound = std::char::from_u32((c as u32) + 1).unwrap();
 
         for o1 in -1..=1 {
-            let i2 = (pos.0 as i32) + o1;     
-            if 0 <= i2 && i2 < end1 && !visited[i2 as usize][pos.1] && data[i2 as usize][pos.1] <= upperbound {
+            let i2 = (pos.0 as i32) + o1;
+            if 0 <= i2
+                && i2 < end1
+                && !visited[i2 as usize][pos.1]
+                && data[i2 as usize][pos.1] <= upperbound
+            {
                 visited[i2 as usize][pos.1] = true;
                 min_pq.push((i2 as usize, pos.1), new_priority.clone());
             }
@@ -66,13 +72,17 @@ fn task1(data: &Vec<Vec<char>>, start_pos: (usize, usize), target_pos: (usize, u
 
         for o2 in -1..=1 {
             let j2 = (pos.1 as i32) + o2;
-            if 0 <= j2 && j2 < end2 && !visited[pos.0][j2 as usize] && data[pos.0][j2 as usize] <= upperbound {
+            if 0 <= j2
+                && j2 < end2
+                && !visited[pos.0][j2 as usize]
+                && data[pos.0][j2 as usize] <= upperbound
+            {
                 visited[pos.0][j2 as usize] = true;
                 min_pq.push((pos.0, j2 as usize), new_priority.clone());
             }
         }
     }
-    
+
     0
 }
 
@@ -89,7 +99,7 @@ fn task2(data: &Vec<Vec<char>>, target_pos: (usize, usize)) -> usize {
             }
         }
     }
-    
+
     min_path
 }
 
@@ -102,7 +112,7 @@ fn main() -> io::Result<()> {
 
     data[start.0][start.1] = 'a';
     data[target.0][target.1] = 'z';
-    
+
     // Task 1
     let out_task1 = task1(&data, start, target);
     println!("Task 1: {}", out_task1);
@@ -110,6 +120,6 @@ fn main() -> io::Result<()> {
     // Task 2
     let out_task2 = task2(&data, target);
     println!("Task 2: {}", out_task2);
-    
+
     Ok(())
 }
