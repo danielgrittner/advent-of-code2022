@@ -18,4 +18,6 @@
 - [X] Day 16 (TODO: This is really slow atm, would be nice to optimize it)
 - [X] Day 17
 - [X] Day 18
+- [X] Day 19
+- [X] Day 20
 - [ ] ...
