@@ -15,10 +15,13 @@
 - [X] Day 13
 - [X] Day 14
 - [X] Day 15
-- [X] Day 16 (TODO: This is really slow atm, would be nice to optimize it)
+- [X] Day 16
 - [X] Day 17
 - [X] Day 18
 - [X] Day 19
 - [X] Day 20
 - [X] Day 21
-- [ ] ...
+- [X] Day 22
+- [ ] Day 23
+- [ ] Day 24
+- [ ] Day 25
